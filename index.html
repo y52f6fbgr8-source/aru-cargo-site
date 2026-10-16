@@ -265,6 +265,11 @@
         Войти
       </button>
     </form>
+    <div id="shipments-section" style="display:none; margin-top:30px;">
+  <h2 id="shipments-title">Мои грузы</h2>
+  <p id="shipments-message">Загрузка грузов...</p>
+  <div id="shipments-list"></div>
+</div>
 
     <p class="notice" id="message"
        data-ru="Вход и отслеживание грузов будут доступны после подключения системы регистрации."
@@ -326,6 +331,82 @@ async function loginNotice(event) {
   message.textContent = lang === 'kk'
     ? 'Сіз жүйеге сәтті кірдіңіз!'
     : 'Вы успешно вошли в систему!';
+  // Показываем раздел «Мои грузы»
+  const section = document.getElementById('shipments-section');
+  const shipmentsMessage = document.getElementById('shipments-message');
+  const shipmentsList = document.getElementById('shipments-list');
+
+  section.style.display = 'block';
+
+  document.getElementById('shipments-title').textContent =
+    lang === 'kk' ? 'Менің жүктерім' : 'Мои грузы';
+
+  shipmentsMessage.textContent =
+    lang === 'kk' ? 'Жүктер жүктелуде...' : 'Загружаем грузы...';
+
+  shipmentsList.replaceChildren();
+
+  // Получаем код клиента
+  const { data: profile, error: profileError } = await supabaseClient
+    .from('profiles')
+    .select('client_code')
+    .eq('id', data.user.id)
+    .single();
+
+  if (profileError || !profile?.client_code) {
+    shipmentsMessage.textContent =
+      lang === 'kk'
+        ? 'Клиент коды табылмады.'
+        : 'Код клиента не найден.';
+    return;
+  }
+
+  // Загружаем грузы клиента
+  const { data: shipments, error: shipmentsError } = await supabaseClient
+    .from('shipments')
+    .select('tracking_number, description, weight, status, received_at')
+    .eq('client_code', profile.client_code)
+    .order('updated_at', { ascending: false });
+
+  if (shipmentsError) {
+    shipmentsMessage.textContent =
+      lang === 'kk'
+        ? 'Жүктерді жүктеу мүмкін болмады.'
+        : 'Не удалось загрузить грузы.';
+    return;
+  }
+
+  if (!shipments || shipments.length === 0) {
+    shipmentsMessage.textContent =
+      lang === 'kk'
+        ? 'Әзірге жүктер жоқ.'
+        : 'Пока грузов нет.';
+    return;
+  }
+
+  shipmentsMessage.textContent = '';
+
+  shipments.forEach((shipment) => {
+    const card = document.createElement('div');
+    card.style.cssText =
+      'padding:15px;margin:12px 0;border:1px solid #ddd;border-radius:10px;';
+
+    const tracking = document.createElement('p');
+    tracking.textContent = 'Трек-номер: ' + (shipment.tracking_number || '—');
+
+    const description = document.createElement('p');
+    description.textContent = 'Товар: ' + (shipment.description || '—');
+
+    const weight = document.createElement('p');
+    weight.textContent = 'Вес: ' +
+      (shipment.weight == null ? '—' : shipment.weight + ' кг');
+
+    const status = document.createElement('p');
+    status.textContent = 'Статус: ' + (shipment.status || '—');
+
+    card.append(tracking, description, weight, status);
+    shipmentsList.appendChild(card);
+  });
 }
 </script>
 
