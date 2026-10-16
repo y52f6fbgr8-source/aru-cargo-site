@@ -297,6 +297,13 @@
       lang === 'kk' ? 'Құпиясөз' : 'Пароль';
   }
 
+  const SUPABASE_URL = 'https://choubmzdbfqdvldqdxfu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_airZpY4zJcNOmgdfcruT7Q_ZFoDMeHe';
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
   function loginNotice(event) {
     event.preventDefault();
 
