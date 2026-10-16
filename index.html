@@ -304,16 +304,29 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
-  function loginNotice(event) {
-    event.preventDefault();
-
-    const lang = document.getElementById('language').value;
-
-    document.getElementById('message').textContent =
-      lang === 'kk'
-        ? 'Жүйеге кіру әлі қосылған жоқ. Келесі кезеңде тіркеу жүйесін қосамыз.'
-        : 'Вход пока не подключён. На следующем этапе настроим регистрацию.';
+async function loginNotice(event) {
+  event.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const lang = document.getElementById('language').value;
+  const message = document.getElementById('message');
+  message.textContent = lang === 'kk'
+    ? 'Кіру орындалуда...'
+    : 'Выполняется вход...';
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+  if (error) {
+    message.textContent = lang === 'kk'
+      ? 'Кіру мүмкін болмады. Email мен құпиясөзді тексеріңіз.'
+      : 'Не удалось войти. Проверьте Email и пароль.';
+    return;
   }
+  message.textContent = lang === 'kk'
+    ? 'Сіз жүйеге сәтті кірдіңіз!'
+    : 'Вы успешно вошли в систему!';
+}
 </script>
 
 </body>
