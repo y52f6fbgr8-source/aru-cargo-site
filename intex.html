@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARU CARGO — Отслеживание грузов</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+    }
+
+    header {
+      background: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 12px #0000000d;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: #ef542c;
+    }
+
+    select {
+      padding: 9px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .hero {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 25px;
+    }
+
+    .banner {
+      background: linear-gradient(120deg, #fff0df, #ffe0d4);
+      border-radius: 24px;
+      padding: 45px 30px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 18px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .button {
+      display: inline-block;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 24px;
+      background: linear-gradient(90deg, #ffb52e, #ef492f);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px 18px;
+      text-align: center;
+      box-shadow: 0 3px 15px #00000008;
+    }
+
+    .icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .login-box {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      max-width: 440px;
+      margin: 30px auto;
+      box-shadow: 0 3px 18px #0000000a;
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    .login-box .button {
+      width: 100%;
+    }
+
+    .notice {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .banner {
+        padding: 35px 20px;
+      }
+
+      .hero {
+        margin: 20px auto;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">ARU <span>CARGO</span></div>
+
+  <select id="language" onchange="changeLanguage()">
+    <option value="ru">Русский</option>
+    <option value="kk">Қазақша</option>
+  </select>
+</header>
+
+<main class="hero">
+
+  <section class="banner">
+    <h1 data-ru="Ваш груз — под контролем"
+        data-kk="Сіздің жүгіңіз — бақылауда">
+      Ваш груз — под контролем
+    </h1>
+
+    <p class="subtitle"
+       data-ru="Отслеживайте свои посылки из Китая в Казахстан в личном кабинете ARU CARGO."
+       data-kk="Қытайдан Қазақстанға жеткізілетін жүктеріңізді ARU CARGO жеке кабинетінде бақылаңыз.">
+      Отслеживайте свои посылки из Китая в Казахстан
+      в личном кабинете ARU CARGO.
+    </p>
+
+    <button class="button"
+            onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})"
+            data-ru="Войти в личный кабинет"
+            data-kk="Жеке кабинетке кіру">
+      Войти в личный кабинет
+    </button>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <div class="icon">📦</div>
+      <h3 data-ru="Мои грузы" data-kk="Менің жүктерім">Мои грузы</h3>
+      <p data-ru="Все ваши посылки в одном месте."
+         data-kk="Барлық жүктеріңіз бір жерде.">
+        Все ваши посылки в одном месте.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🚚</div>
+      <h3 data-ru="Статус доставки" data-kk="Жеткізу мәртебесі">Статус доставки</h3>
+      <p data-ru="Узнавайте текущий статус своего груза."
+         data-kk="Жүгіңіздің ағымдағы мәртебесін біліңіз.">
+        Узнавайте текущий статус своего груза.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="icon">⚖️</div>
+      <h3 data-ru="Вес посылок" data-kk="Жүк салмағы">Вес посылок</h3>
+      <p data-ru="Просматривайте вес зарегистрированных посылок."
+         data-kk="Тіркелген жүктеріңіздің салмағын қараңыз.">
+        Просматривайте вес зарегистрированных посылок.
+      </p>
+    </div>
+
+  </section>
+
+  <section class="login-box" id="login">
+    <h2 data-ru="Вход в личный кабинет"
+        data-kk="Жеке кабинетке кіру">
+      Вход в личный кабинет
+    </h2>
+
+    <form onsubmit="loginNotice(event)">
+      <input type="tel"
+             id="phone"
+             placeholder="Номер телефона (+7...)"
+             autocomplete="tel"
+             required>
+
+      <input type="password"
+             id="password"
+             placeholder="Пароль"
+             autocomplete="current-password"
+             required>
+
+      <button class="button" type="submit"
+              data-ru="Войти"
+              data-kk="Кіру">
+        Войти
+      </button>
+    </form>
+
+    <p class="notice" id="message"
+       data-ru="Вход и отслеживание грузов будут доступны после подключения системы регистрации."
+       data-kk="Тіркелу жүйесі қосылғаннан кейін кіру және жүктерді бақылау қолжетімді болады.">
+      Вход и отслеживание грузов будут доступны после
+      подключения системы регистрации.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 ARU CARGO
+</footer>
+
+<script>
+  function changeLanguage() {
+    const lang = document.getElementById('language').value;
+
+    document.documentElement.lang = lang === 'kk' ? 'kk' : 'ru';
+
+    document.querySelectorAll('[data-' + lang + ']').forEach(element => {
+      element.textContent = element.getAttribute('data-' + lang);
+    });
+
+    document.getElementById('phone').placeholder =
+      lang === 'kk' ? 'Телефон нөмірі (+7...)' : 'Номер телефона (+7...)';
+
+    document.getElementById('password').placeholder =
+      lang === 'kk' ? 'Құпиясөз' : 'Пароль';
+  }
+
+  function loginNotice(event) {
+    event.preventDefault();
+
+    const lang = document.getElementById('language').value;
+
+    document.getElementById('message').textContent =
+      lang === 'kk'
+        ? 'Жүйеге кіру әлі қосылған жоқ. Келесі кезеңде тіркеу жүйесін қосамыз.'
+        : 'Вход пока не подключён. На следующем этапе настроим регистрацию.';
+  }
+</script>
+
+</body>
+</html>
