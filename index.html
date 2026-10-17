@@ -265,7 +265,7 @@
         Войти
       </button>
     </form>
-    <div id="shipments-section" style="display:none; margin-top:30px;">
+    <div id="</script>" style="display:none; margin-top:30px;">
   <h2 id="shipments-title">Мои грузы</h2>
   <p id="shipments-message">Загрузка грузов...</p>
   <div id="shipments-list"></div>
@@ -315,8 +315,8 @@ const supabaseClient = window.supabase.createClient(
   }
 }
 );
-async function loginNotice(event) {
-  event.preventDefault();
+async function loginNotice(event, savedUser = null) {
+  if (event) event.preventDefault();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
   const lang = document.getElementById('language').value;
@@ -324,10 +324,20 @@ async function loginNotice(event) {
   message.textContent = lang === 'kk'
     ? 'Кіру орындалуда...'
     : 'Выполняется вход...';
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
+ let data, error;
+
+if (savedUser) {
+  data = { user: savedUser };
+  error = null;
+} else {
+  const result = await supabaseClient.auth.signInWithPassword({
     email: email,
     password: password
   });
+
+  data = result.data;
+  error = result.error;
+}
   if (error) {
     message.textContent = lang === 'kk'
       ? 'Кіру мүмкін болмады. Email мен құпиясөзді тексеріңіз.'
@@ -414,6 +424,25 @@ async function loginNotice(event) {
     shipmentsList.appendChild(card);
   });
 }
+  window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  if (session) {
+    await loginNotice(null, session.user);
+    const emailField = document.getElementById('email');
+    const passwordField = document.getElementById('password');
+
+    if (emailField && passwordField) {
+      emailField.value = session.user.email || '';
+      passwordField.value = '';
+    }
+
+    const message = document.getElementById('message');
+    if (message) {
+      message.textContent = 'Вы уже вошли в аккаунт';
+    }
+  }
+});
 </script>
 
 </body>
