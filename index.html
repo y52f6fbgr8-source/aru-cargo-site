@@ -307,7 +307,13 @@ const SUPABASE_KEY = 'sb_publishable_airZpY4zJcNOmgdfcruT7Q_ZFoDMeHe';
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_KEY
+  SUPABASE_KEY,
+{
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true
+  }
+}
 );
 async function loginNotice(event) {
   event.preventDefault();
